@@ -13,7 +13,7 @@ export default function CookiePolicyPage() {
       <section className="chapter">
         <div className="shell">
           <div className="max-w-[800px] mb-12">
-            <span className="text-[#93969e] text-xs font-mono tracking-widest uppercase block mb-4">Last Updated: July 10, 2026</span>
+            <span className="text-[#93969e] text-xs font-mono tracking-widest uppercase block mb-4">Last Updated: July 23, 2026</span>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-none mb-6">Cookie Policy</h1>
             <p className="text-lg text-[#b8bac1] leading-relaxed">
               This policy explains what cookies <strong>www.huygenstudios.com</strong> uses, why we use them, and how you can control them.
@@ -44,14 +44,14 @@ export default function CookiePolicyPage() {
                   <tbody className="divide-y divide-[rgba(255,255,255,0.05)]">
                     <tr>
                       <td className="py-2 pr-4 text-white">Essential</td>
-                      <td className="py-2 pr-4">Vercel / Next.js</td>
-                      <td className="py-2 pr-4">Session management and security. Required for the website to function.</td>
-                      <td className="py-2">Session</td>
+                      <td className="py-2 pr-4">Huygen Studios</td>
+                      <td className="py-2 pr-4">Stores your cookie choice locally so the preference notice does not reappear on every page.</td>
+                      <td className="py-2">Until browser storage is cleared</td>
                     </tr>
                     <tr>
                       <td className="py-2 pr-4 text-white">Analytics</td>
                       <td className="py-2 pr-4">Google Analytics</td>
-                      <td className="py-2 pr-4">Measures website traffic and user behaviour to improve performance. Active only if the analytics configuration is enabled by the site operator.</td>
+                      <td className="py-2 pr-4">Measures website traffic and user behaviour to improve performance. It loads only after you choose “Accept analytics.”</td>
                       <td className="py-2">Up to 2 years</td>
                     </tr>
                     <tr>
@@ -67,7 +67,9 @@ export default function CookiePolicyPage() {
 
             <div>
               <h2 className="text-xl font-bold text-white mb-3">3. Managing Your Cookie Preferences</h2>
-              <p className="mb-3">You have several ways to control cookies:</p>
+              <p className="mb-3">
+                When you first visit, choose <strong>Essential only</strong> or <strong>Accept analytics</strong>. You can reset that choice by clearing site data for huygenstudios.com. You can also control cookies in these ways:
+              </p>
               <ul className="list-disc list-inside space-y-2">
                 <li>
                   <strong>Browser settings:</strong> Most browsers allow you to block or delete cookies. Visit your browser&apos;s help section for instructions (e.g.,{" "}

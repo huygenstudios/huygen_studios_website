@@ -24,7 +24,7 @@ export default function HomePage() {
         "url": "https://www.huygenstudios.com",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.huygenstudios.com/logo.png"
+          "url": "https://www.huygenstudios.com/Huygen%20Studios%20logo%20Black%20horizontal.png"
         },
         "sameAs": [
           "https://github.com/Huygen-Studios"

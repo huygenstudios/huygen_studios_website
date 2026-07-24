@@ -208,3 +208,109 @@ button:focus-visible {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
+
+.cookie-consent {
+  position: fixed;
+  z-index: 300;
+  right: 20px;
+  bottom: 20px;
+  width: min(520px, calc(100vw - 40px));
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 9, 11, 0.96);
+  color: #d8d9dd;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.cookie-consent p {
+  margin: 0;
+}
+
+.cookie-consent a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.cookie-consent > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.cookie-consent button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cookie-consent button:focus-visible {
+  outline: 2px solid #4a79ff;
+  outline-offset: 2px;
+}
+
+.cookie-consent .cookie-consent-primary {
+  background: #fff;
+  color: #08090b;
+  border-color: #fff;
+}
+
+.creatives-editorial {
+  background: #08090b;
+  color: #e8e8eb;
+  padding: clamp(80px, 10vw, 150px) 0;
+  font-family: var(--font-display), sans-serif;
+}
+
+.creatives-editorial-inner {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.creatives-editorial h2 {
+  max-width: 14ch;
+  margin: 0 0 28px;
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.creatives-editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 56px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.creatives-editorial article {
+  padding: 30px;
+  background: #0d0f13;
+}
+
+.creatives-editorial h3 {
+  margin: 0 0 18px;
+  font-size: 1.25rem;
+}
+
+.creatives-editorial p {
+  color: #aeb0b7;
+  line-height: 1.7;
+}
+
+.creatives-editorial a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .creatives-editorial-grid {
+    grid-template-columns: 1fr;
+  }
+}

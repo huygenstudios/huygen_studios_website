@@ -34,14 +34,15 @@ function applyBlogRevalidation(slug: string | null, customPaths: string[] | null
   const tags = ["marble-posts"];
 
   revalidatePath("/blog");
-  // Use "layout" scope so Next.js properly invalidates the sitemap route
-  revalidatePath("/sitemap.xml", "layout");
-  revalidateTag("marble-posts", "max");
+  revalidatePath("/sitemap.xml");
+  // External CMS webhooks require immediate expiry. The "max" profile serves
+  // stale data once more, which is why the sitemap could lag behind publishing.
+  revalidateTag("marble-posts", { expire: 0 });
 
   if (slug) {
     const postPath = `/blog/${encodeBlogSlug(slug)}`;
     revalidatePath(postPath);
-    revalidateTag(`marble-post:${slug}`, "max");
+    revalidateTag(`marble-post:${slug}`, { expire: 0 });
     paths.push(postPath);
     tags.push(`marble-post:${slug}`);
   }

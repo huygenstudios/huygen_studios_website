@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { ArrowUpRight, Compass } from "lucide-react";
 import { gsap, useGSAP } from "../animations/gsap-client";
 import { BlogPost } from "@/lib/blog/types";
 import { AnimatedBlogCard } from "./AnimatedBlogCard";
 import { SafeBlogCoverImage } from "./SafeBlogCoverImage";
+import { blogCategories, getEffectiveCategory } from "@/lib/blog/categories";
 
 interface BlogCatalogProps {
   posts: BlogPost[];
@@ -49,16 +51,6 @@ const categoryStyleMap: Record<string, { color: string; border: string; glow: st
   },
 };
 
-const curatedCategories = [
-  "All",
-  "AI Automation",
-  "AI Voice Agents",
-  "WhatsApp Automation",
-  "CRM & Sales Systems",
-  "Cinematic Websites",
-  "Business Strategy",
-];
-
 function makeThumbnailTitle(fullTitle: string): string {
   const words = fullTitle.split(/\s+/).filter((word) => word.length > 2);
   if (words.length <= 4) return fullTitle;
@@ -83,7 +75,7 @@ function formatPostDate(dateStr: string | null | undefined, month: "short" | "lo
 function BlogVisual({ post, className = "aspect-[16/10]" }: { post: BlogPost; className?: string }) {
   const imageUrl = post.coverImage?.url || null;
   const title = post.title || "Untitled article";
-  const category = post.category?.name || "AI Automation";
+  const category = getEffectiveCategory(post).name;
 
   if (imageUrl) {
     return (
@@ -148,7 +140,7 @@ function BlogVisual({ post, className = "aspect-[16/10]" }: { post: BlogPost; cl
 function BlogCard({ post }: { post: BlogPost }) {
   const title = post.title || "Untitled article";
   const description = post.description || "";
-  const category = post.category?.name || "AI Automation";
+  const category = getEffectiveCategory(post).name;
   const readingTime = post.readingTime || "3 min read";
 
   return (
@@ -177,7 +169,7 @@ function BlogCard({ post }: { post: BlogPost }) {
 
 function CompactBlogCard({ post }: { post: BlogPost }) {
   const title = post.title || "Untitled article";
-  const category = post.category?.name || "AI Automation";
+  const category = getEffectiveCategory(post).name;
   const readingTime = post.readingTime || "3 min read";
 
   return (
@@ -201,11 +193,22 @@ function CompactBlogCard({ post }: { post: BlogPost }) {
 export function BlogCatalog({ posts }: BlogCatalogProps) {
   const catalogRef = useRef<HTMLDivElement>(null);
   const [activeCategory, setActiveCategory] = useState("All");
+  const curatedCategories = useMemo(
+    () => [
+      "All",
+      ...blogCategories
+        .filter((category) =>
+          posts.some((post) => getEffectiveCategory(post).slug === category.slug),
+        )
+        .map((category) => category.name),
+    ],
+    [posts],
+  );
 
   const filteredPosts = useMemo(() => {
     if (activeCategory === "All") return posts;
     return posts.filter(
-      (post) => post.category?.name.toLowerCase() === activeCategory.toLowerCase()
+      (post) => getEffectiveCategory(post).name.toLowerCase() === activeCategory.toLowerCase()
     );
   }, [posts, activeCategory]);
 
@@ -267,6 +270,7 @@ export function BlogCatalog({ posts }: BlogCatalogProps) {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {curatedCategories.map((cat) => {
             const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
+            const categoryDefinition = blogCategories.find((category) => category.name === cat);
             const config = categoryStyleMap[cat] || {
               color: "from-neutral-800 to-neutral-900/60",
               border: "group-hover:border-neutral-500/20",
@@ -274,8 +278,9 @@ export function BlogCatalog({ posts }: BlogCatalogProps) {
             };
 
             return (
-              <button
+              <Link
                 key={cat}
+                href={categoryDefinition ? `/blog/category/${categoryDefinition.slug}` : "/blog"}
                 onClick={() => setActiveCategory(cat)}
                 className={`relative overflow-hidden rounded-2xl p-4 text-left border transition-all duration-300 h-24 group flex flex-col justify-between ${
                   isActive
@@ -288,7 +293,7 @@ export function BlogCatalog({ posts }: BlogCatalogProps) {
                 <h4 className="text-xs md:text-sm font-bold text-white relative z-10 transition-colors group-hover:text-blue-400">
                   {cat}
                 </h4>
-              </button>
+              </Link>
             );
           })}
         </div>
@@ -311,7 +316,7 @@ export function BlogCatalog({ posts }: BlogCatalogProps) {
                 <div className="space-y-4">
                   <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-[#93969e]">
                     <span className="px-3 py-1 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 font-bold uppercase tracking-wider text-[10px]">
-                      {featuredPost.category?.name || "AI Automation"}
+                      {getEffectiveCategory(featuredPost).name}
                     </span>
                     <span>&bull;</span>
                     <span>{formatPostDate(featuredPost.publishedAt, "long")}</span>
@@ -346,7 +351,7 @@ export function BlogCatalog({ posts }: BlogCatalogProps) {
               </div>
               <div className="pt-6 border-t border-white/5">
                 <p className="text-[11px] font-mono text-neutral-500 leading-normal">
-                  Huygen Studios original research is sourced directly from developer sandboxes and live builds.
+                  Published articles are selected for practical usefulness and reviewed against our sourcing and editorial standards.
                 </p>
               </div>
             </div>

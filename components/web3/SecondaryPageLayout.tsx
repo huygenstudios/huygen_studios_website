@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { TextRoll } from "../Button";
 import { AnimatedCta } from "../animations/AnimatedCta";
+import { BrandLogo } from "./BrandLogo";
 
 interface SecondaryPageLayoutProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ interface SecondaryPageLayoutProps {
 
 const nav = [
   ["Services", "/services"],
+  ["Products", "/products"],
   ["About", "/about"],
   ["Pricing", "/pricing"],
   ["FAQ", "/faq"],
@@ -76,9 +78,7 @@ export function SecondaryPageLayout({ children }: SecondaryPageLayoutProps) {
       </a>
       {/* Header */}
       <header className="header">
-        <Link href="/" className="brand roll-control">
-          <TextRoll>HUYGEN STUDIOS</TextRoll>
-        </Link>
+        <BrandLogo priority />
         <nav aria-label="Primary navigation">
           {nav.map(([label, href]) => (
             <Link className="roll-control" href={href} key={href}>
@@ -129,9 +129,7 @@ export function SecondaryPageLayout({ children }: SecondaryPageLayoutProps) {
       <footer className="footer">
         <div className="shell footer-grid">
           <div>
-            <Link href="/" className="brand roll-control">
-              <TextRoll>HUYGEN STUDIOS</TextRoll>
-            </Link>
+            <BrandLogo />
             <p>AI automation, enterprise systems, creative production, motion, UI/UX, and frontend delivery.</p>
           </div>
           <div>
@@ -152,6 +150,12 @@ export function SecondaryPageLayout({ children }: SecondaryPageLayoutProps) {
             </Link>
             <Link className="roll-control" href="/cookie-policy">
               <TextRoll>Cookie Policy</TextRoll>
+            </Link>
+            <Link className="roll-control" href="/disclaimer">
+              <TextRoll>Disclaimer</TextRoll>
+            </Link>
+            <Link className="roll-control" href="/editorial-standards">
+              <TextRoll>Editorial Standards</TextRoll>
             </Link>
           </div>
           <div>

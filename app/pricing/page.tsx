@@ -15,7 +15,7 @@ export default function PricingPage() {
         <div className="shell">
           <div className="max-w-[800px] mb-16">
             <span className="text-[#93969e] text-xs font-mono tracking-widest uppercase block mb-4">03 // Pricing & Engagement</span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none mb-6">Transparent, structured structures.</h1>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none mb-6">Transparent, structured engagements.</h1>
             <p className="text-lg md:text-xl text-[#b8bac1] leading-relaxed">
               We align our engagement models directly with your project lifecycle, from initial validation pilots to long-term operational support.
             </p>

@@ -27,6 +27,10 @@ import { SecondaryPageLayout } from "@/components/web3/SecondaryPageLayout";
 import { encodeBlogSlug, getBlogPosts, getBlogPostBySlug, normalizeBlogSlug } from "@/lib/blog";
 import { BlogPost } from "@/lib/blog/types";
 import { SafeBlogCoverImage } from "@/components/blog/SafeBlogCoverImage";
+import {
+  getEditorialStatus,
+  getEffectiveCategory,
+} from "@/lib/blog";
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
@@ -52,13 +56,18 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     const coverImageUrl = post.coverImage?.url || null;
     const ogImages = coverImageUrl ? [{ url: coverImageUrl }] : [];
     const canonicalSlug = encodeBlogSlug(post.slug || slug);
+    const editorialStatus = getEditorialStatus(post);
 
     return {
-      title: `${title} | Huygen Studios Blog`,
+      title,
       description,
       alternates: { canonical: `/blog/${canonicalSlug}` },
+      robots:
+        editorialStatus === "published"
+          ? { index: true, follow: true }
+          : { index: false, follow: true, nocache: true },
       openGraph: {
-        title: `${title} | Huygen Studios Blog`,
+        title,
         description,
         url: `https://www.huygenstudios.com/blog/${canonicalSlug}`,
         type: "article",
@@ -69,7 +78,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       },
       twitter: {
         card: "summary_large_image",
-        title: `${title} | Huygen Studios`,
+        title,
         description,
         ...(ogImages.length > 0 ? { images: [ogImages[0].url] } : {}),
         creator: "@huygenstudios",
@@ -147,6 +156,9 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   const publishedAt = post.publishedAt || undefined;
   const updatedAt = post.updatedAt || publishedAt;
   const canonicalSlug = encodeBlogSlug(post.slug || slug);
+  const editorialStatus = getEditorialStatus(post);
+  const effectiveCategory = getEffectiveCategory(post);
+  const categoryName = effectiveCategory.name;
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -155,19 +167,28 @@ export default async function BlogPostPage({ params }: PostPageProps) {
     "description": description,
     "datePublished": publishedAt,
     "dateModified": updatedAt,
+    "articleSection": categoryName,
+    "isAccessibleForFree": true,
     "author": {
-      "@type": "Person",
-      "name": authorName
+      "@type": "Organization",
+      "@id": "https://www.huygenstudios.com/#organization",
+      "name": authorName,
+      "url": "https://www.huygenstudios.com/authors/huygen-studios-editorial-team"
     },
     "publisher": {
       "@type": "Organization",
       "name": "Huygen Studios",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.huygenstudios.com/android-chrome-512x512.png",
-        "width": 512,
-        "height": 512
+        "url": "https://www.huygenstudios.com/Huygen%20Studios%20logo%20Black%20horizontal.png",
+        "width": 2048,
+        "height": 682
       }
+    },
+    "editor": {
+      "@type": "Organization",
+      "name": "Huygen Studios Editorial Team",
+      "url": "https://www.huygenstudios.com/authors/huygen-studios-editorial-team"
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
@@ -194,6 +215,12 @@ export default async function BlogPostPage({ params }: PostPageProps) {
       {
         "@type": "ListItem",
         "position": 3,
+        "name": categoryName,
+        "item": `https://www.huygenstudios.com/blog/category/${effectiveCategory.slug}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
         "name": title,
         "item": `https://www.huygenstudios.com/blog/${canonicalSlug}`
       }
@@ -202,6 +229,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
   // Safe date parsing
   let formattedDate = "";
+  let formattedUpdatedDate = "";
   try {
     if (post.publishedAt) {
       const d = new Date(post.publishedAt);
@@ -216,11 +244,23 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   } catch {
     // Ignore invalid date
   }
+  try {
+    if (post.updatedAt && post.updatedAt !== post.publishedAt) {
+      const d = new Date(post.updatedAt);
+      if (!isNaN(d.getTime())) {
+        formattedUpdatedDate = d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+      }
+    }
+  } catch {
+    // Ignore invalid date
+  }
 
   // Safe image url
   const coverImage = post.coverImage;
-  const categoryName = post.category?.name || "AI Automation";
-
   return (
     <SecondaryPageLayout>
       {/* Schema Markup */}
@@ -249,13 +289,24 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                   <span>•</span>
                 </>
               )}
+              {formattedUpdatedDate && (
+                <>
+                  <span>Updated {formattedUpdatedDate}</span>
+                  <span>â€¢</span>
+                </>
+              )}
               {post.readingTime && (
                 <>
                   <span>{post.readingTime}</span>
                   <span>•</span>
                 </>
               )}
-              <span>Category: {categoryName}</span>
+              <Link
+                href={`/blog/category/${effectiveCategory.slug}`}
+                className="hover:text-white transition-colors"
+              >
+                Category: {categoryName}
+              </Link>
             </div>
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight text-white mb-6">
               {title}
@@ -265,7 +316,34 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                 {description}
               </p>
             )}
+            <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-[#93969e]">
+              <span>By</span>
+              <Link
+                href="/authors/huygen-studios-editorial-team"
+                rel="author"
+                className="text-white underline hover:text-[#4a79ff]"
+              >
+                Huygen Studios Editorial Team
+              </Link>
+              <span>Reviewed by Huygen Studios Editorial Team</span>
+              <span aria-hidden="true">•</span>
+              <Link
+                href="/editorial-standards"
+                className="underline hover:text-[#4a79ff]"
+              >
+                How we publish
+              </Link>
+            </div>
           </header>
+
+          {editorialStatus === "needs-review" ? (
+            <aside className="max-w-[850px] mb-10 border border-amber-300/25 bg-amber-300/5 p-5 text-sm text-amber-100 leading-relaxed">
+              <strong className="block mb-1">Archived pending editorial review</strong>
+              This legacy automated news draft is available for transparency, but it is
+              excluded from the blog catalog and sitemap and marked noindex until a human
+              editor verifies the source fidelity, removes repeated filler, and approves it.
+            </aside>
+          ) : null}
 
           {/* Render Cover Image safely if present */}
           {coverImage && (
@@ -285,6 +363,18 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             dangerouslySetInnerHTML={{ __html: sanitizedContentHtml }}
           />
 
+          <aside className="max-w-[850px] mt-10 border border-white/10 bg-white/[0.025] p-5 text-xs text-[#93969e] leading-relaxed">
+            <strong className="block text-white mb-2">Editorial and AI-assistance disclosure</strong>
+            Huygen Studios uses AI-assisted research, outlining, and drafting tools in its
+            publishing workflow. The Huygen Studios Editorial Team remains responsible for
+            source selection, topic fidelity, corrections, and the decision to publish.
+            Review criteria and the corrections process are documented in our{" "}
+            <Link href="/editorial-standards" className="text-white underline">
+              editorial standards
+            </Link>
+            .
+          </aside>
+
           {/* Related Posts Section */}
           {relatedPosts.length > 0 && (
             <div className="mt-16 pt-12 border-t border-[rgba(255,255,255,0.08)]">
@@ -292,7 +382,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {relatedPosts.map((related) => (
                   <div key={related.slug} className="border border-[rgba(255,255,255,0.06)] p-6 rounded bg-[#0c0d10] hover:border-[rgba(74,121,255,0.25)] transition-all">
-                    <span className="text-xs font-mono text-[#93969e] block mb-2">{related.category?.name || "AI Automation"}</span>
+                    <span className="text-xs font-mono text-[#93969e] block mb-2">{getEffectiveCategory(related).name}</span>
                     <h3 className="text-lg font-bold text-white mb-3 hover:text-[#4a79ff] transition-colors">
                       <Link href={`/blog/${encodeBlogSlug(related.slug)}`}>{related.title || "Untitled Article"}</Link>
                     </h3>
@@ -315,7 +405,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
               &larr; Back to Blog
             </Link>
             <Link href="/contact" className="text-sm font-semibold underline hover:text-[#4a79ff] transition-colors">
-              Discuss Automation Build &rarr;
+              Contact the editorial team &rarr;
             </Link>
           </div>
         </div>

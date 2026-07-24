@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "@/components/web3/web3.css";
+import { CookieConsent } from "@/components/CookieConsent";
 
 const displayFont = Space_Grotesk({
   variable: "--font-display",
@@ -28,26 +29,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.huygenstudios.com"),
   icons: {
-    icon: [
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-    ],
-    shortcut: '/favicon.ico',
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-    other: [
-      {
-        rel: 'icon',
-        url: '/android-chrome-192x192.png',
-        sizes: '192x192',
-      },
-      {
-        rel: 'icon',
-        url: '/android-chrome-512x512.png',
-        sizes: '512x512',
-      },
-    ],
+    icon: "/favicon.ico?v=20260724",
+    shortcut: "/favicon.ico?v=20260724",
+    apple: "/apple-icon.png?v=20260724",
   },
   title: {
     default: "Huygen Studios | Premium AI Automation & Web Agency",
@@ -77,14 +61,7 @@ export const metadata: Metadata = {
       "Huygen Studios is the premier agency for elite AI automation, voice agents, and cinematic web experiences. Transform your business today.",
     url: "https://www.huygenstudios.com",
     siteName: "Huygen Studios",
-    images: [
-      {
-        url: "/skiper76_2.png",
-        width: 1200,
-        height: 630,
-        alt: "Huygen Studios - AI Automation & Web Agency",
-      },
-    ],
+    images: [{ url: "/images/huygen-hero.webp", width: 1280, height: 720, alt: "Huygen Studios" }],
     locale: "en_US",
     type: "website",
   },
@@ -93,7 +70,7 @@ export const metadata: Metadata = {
     title: "Huygen Studios | Premium AI Automation & Web Agency",
     description:
       "Huygen Studios is the premier agency for elite AI automation, voice agents, and cinematic web experiences.",
-    images: ["/skiper76_2.png"],
+    images: ["/images/huygen-hero.webp"],
     creator: "@huygenstudios",
   },
   robots: {
@@ -122,9 +99,9 @@ const jsonLd = {
   url: "https://www.huygenstudios.com",
   logo: {
     "@type": "ImageObject",
-    url: "https://www.huygenstudios.com/android-chrome-512x512.png",
-    width: 512,
-    height: 512,
+    url: "https://www.huygenstudios.com/Huygen%20Studios%20logo%20Black%20horizontal.png",
+    width: 2048,
+    height: 682,
   },
   description: "Technology and creative studio specialising in enterprise AI automation, voice systems, and cinematic web interfaces.",
   contactPoint: {
@@ -133,9 +110,12 @@ const jsonLd = {
     email: "hello@huygenstudios.com",
     availableLanguage: ["English"]
   },
-  sameAs: [
-    "https://twitter.com/huygenstudios",
-    "https://linkedin.com/company/huygen-studios"
+  knowsAbout: [
+    "AI automation",
+    "AI voice agents",
+    "creative production",
+    "frontend engineering",
+    "digital products"
   ]
 };
 
@@ -148,7 +128,7 @@ export default function RootLayout({
     <html lang="en" className={`${displayFont.variable} ${bodyFont.variable} antialiased`} suppressHydrationWarning>
       <head>
         {/* Prevent Dark Reader extension from causing hydration errors */}
-        <meta name="color-scheme" content="dark" />
+        <meta name="color-scheme" content="dark light" />
         <meta name="darkreader-lock" />
         {/* RSS feed discovery */}
         <link rel="alternate" type="application/rss+xml" title="Huygen Studios Blog" href="https://www.huygenstudios.com/rss.xml" />
@@ -166,24 +146,7 @@ export default function RootLayout({
       </head>
       <body className="font-body text-white bg-[#050505]" suppressHydrationWarning>
         {children}
-        {googleAnalyticsId ? (
-          <>
-            <Script
-              strategy="afterInteractive"
-              src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${googleAnalyticsId}', {
-                  page_path: window.location.pathname,
-                });
-              `}
-            </Script>
-          </>
-        ) : null}
+        <CookieConsent analyticsId={googleAnalyticsId} />
       </body>
     </html>
   );

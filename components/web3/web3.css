@@ -21,3 +21,38 @@
 /* ─── STUDIO-ROOT FOCUS RING (scoped to override web3.css button resets) ─── */
 .studio-root a:focus-visible,.studio-root button:focus-visible{outline:2px solid #f63a39;outline-offset:2px;border-radius:4px}
 
+/* Brand assets switch with the active theme; the compact stacked mark is used on mobile. */
+.brand-logo{position:relative;display:block;flex:0 0 128px;width:128px;height:43px}
+.brand-logo-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:left center}
+.brand-logo-black,.brand-logo-vertical{display:none}
+.theme-light .brand-logo-white,[data-theme="light"] .brand-logo-white{display:none}
+.theme-light .brand-logo-black,[data-theme="light"] .brand-logo-black{display:block}
+
+.products-feature{background:#0d1015}
+.section-kicker{display:block;color:#7f8aa0;font:10px var(--font-body);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px}
+.product-feature-card{display:grid;grid-template-columns:1.05fr .95fr;min-height:600px;border:1px solid var(--line-dark);background:#11151c}
+.product-feature-visual{position:relative;min-height:480px;overflow:hidden;background:#171b23}
+.product-feature-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 62%,rgba(17,21,28,.4))}
+.product-feature-copy{padding:clamp(38px,6vw,84px);display:flex;flex-direction:column;justify-content:center}
+.product-feature-copy>span{font:10px var(--font-body);letter-spacing:.13em;text-transform:uppercase;color:#8b91a0}
+.product-feature-copy h3{font-size:clamp(3.2rem,6vw,6.4rem);letter-spacing:-.07em;line-height:.9;margin:22px 0 28px}
+.product-feature-copy>p{color:#b8bac1;line-height:1.65;max-width:600px}
+.product-feature-copy ul{list-style:none;padding:0;margin:30px 0}
+.product-feature-copy li{padding:12px 0;border-top:1px solid var(--line-dark);font-size:13px;color:#d8d9dd}
+.product-feature-actions{display:flex;flex-wrap:wrap;gap:1px}
+
+@media(max-width:1000px){
+  .product-feature-card{grid-template-columns:1fr}
+  .product-feature-visual{min-height:440px}
+}
+
+@media(max-width:767px){
+  .brand-logo{flex-basis:92px;width:92px;height:36px}
+  .brand-logo-horizontal{display:none!important}
+  .brand-logo-vertical.brand-logo-white{display:block}
+  .theme-light .brand-logo-vertical.brand-logo-white,[data-theme="light"] .brand-logo-vertical.brand-logo-white{display:none}
+  .theme-light .brand-logo-vertical.brand-logo-black,[data-theme="light"] .brand-logo-vertical.brand-logo-black{display:block}
+  .product-feature-visual{min-height:330px}
+  .product-feature-copy{padding:34px 24px}
+  .product-feature-actions{align-items:flex-start;flex-direction:column}
+}

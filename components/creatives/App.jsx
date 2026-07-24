@@ -185,12 +185,18 @@ function App() {
           transition={{ duration: 1, delay: 0.5 }}
           className="navbar absolute top-[8vh] w-full z-50"
         >
+          <a href="/" className="creatives-brand" aria-label="Huygen Studios home">
+            <picture>
+              <source media="(max-width: 767px)" srcSet="/Huygen Studios logo white vertical.png" />
+              <img src="/Huygen Studios logo white horizontal.png" alt="Huygen Studios" />
+            </picture>
+          </a>
           <div className="nav-links">
             <a href="/">Main Studio</a>
-            <a href="#">Work</a>
-            <a href="#">Services</a>
-            <a href="#">Contact</a>
-            <a href="#" onClick={toggleAudio}>Sound [{isPlaying ? 'ON' : 'OFF'}]</a>
+            <a href="#work">Work</a>
+            <a href="/services">Services</a>
+            <a href="/contact">Contact</a>
+            <button type="button" onClick={toggleAudio}>Sound [{isPlaying ? 'ON' : 'OFF'}]</button>
           </div>
         </motion.nav>
 
@@ -206,7 +212,7 @@ function App() {
             </p>
             
             <LiquidGlass className="rounded-[100px] pointer-events-auto" color="white" chromaticAberration={2} blur={16} button>
-              <a href="#" className="px-12 py-5 text-[1.1rem] text-white font-medium block">
+              <a href="mailto:hello@huygenstudios.com" className="px-12 py-5 text-[1.1rem] text-white font-medium block">
                 Start a project
               </a>
             </LiquidGlass>
@@ -215,7 +221,7 @@ function App() {
       </section>
 
       {/* Section 2: Sphere/Grid Gallery */}
-      <section className="relative w-full h-screen overflow-hidden bg-black">
+      <section id="work" className="relative w-full h-screen overflow-hidden bg-black">
         <GallerySection isPlaying={isPlaying} toggleAudio={toggleAudio} />
       </section>
     </main>

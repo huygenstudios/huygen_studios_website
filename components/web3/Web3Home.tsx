@@ -9,6 +9,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { PortfolioMarquee } from "./PortfolioMarquee";
 import { TextRoll } from "../Button";
+import { BrandLogo } from "./BrandLogo";
+import { HuygenProducts } from "./HuygenProducts";
 import "./web3.css";
 
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -83,6 +85,7 @@ const faqs = [
 
 const nav = [
   ["Services", "/services"],
+  ["Products", "/products"],
   ["About", "/about"],
   ["Pricing", "/pricing"],
   ["FAQ", "/faq"],
@@ -255,7 +258,7 @@ export function Web3Home() {
       <a href="#top" className="skip-link">Skip to main content</a>
       <div className="page">
         <header className="header">
-          <Link href="#top" className="brand roll-control"><TextRoll>HUYGEN STUDIOS</TextRoll></Link>
+          <BrandLogo href="#top" priority />
           <nav aria-label="Primary navigation">{nav.map(([label, href]) => <Link className="roll-control" href={href} key={href}><TextRoll>{label}</TextRoll></Link>)}</nav>
           <Link href="mailto:hello@huygenstudios.com" className="header-cta roll-control"><TextRoll>Start a project</TextRoll> <ArrowUpRight size={15} /></Link>
           <button className="menu-toggle" aria-label="Open navigation" onClick={() => setMobileOpen(true)}><Menu /></button>
@@ -304,6 +307,8 @@ export function Web3Home() {
             <div className="cap-grid">{capabilities.map((item, index) => <article className={`cap-card ${item.className}`} key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{item.title}</h3><p>{item.copy}</p><small>{item.detail}</small></div><ArrowUpRight /></article>)}</div>
           </div>
         </section>
+
+        <HuygenProducts />
 
         <section className="chapter">
           <div className="shell">
@@ -370,7 +375,7 @@ export function Web3Home() {
         <footer className="footer">
           <div className="shell footer-grid">
             <div>
-              <Link href="#top" className="brand roll-control"><TextRoll>HUYGEN STUDIOS</TextRoll></Link>
+              <BrandLogo href="#top" />
               <p>AI automation, enterprise systems, creative production, motion, UI/UX, and frontend delivery.</p>
             </div>
             <div>
@@ -382,6 +387,8 @@ export function Web3Home() {
               <Link className="roll-control" href="/privacy-policy"><TextRoll>Privacy Policy</TextRoll></Link>
               <Link className="roll-control" href="/terms"><TextRoll>Terms of Service</TextRoll></Link>
               <Link className="roll-control" href="/cookie-policy"><TextRoll>Cookie Policy</TextRoll></Link>
+              <Link className="roll-control" href="/disclaimer"><TextRoll>Disclaimer</TextRoll></Link>
+              <Link className="roll-control" href="/editorial-standards"><TextRoll>Editorial Standards</TextRoll></Link>
             </div>
             <div>
               <strong>Contact</strong>

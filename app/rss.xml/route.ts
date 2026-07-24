@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { getBlogPosts } from "@/lib/blog";
 import { encodeBlogSlug } from "@/lib/blog/normalize";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const SITE_URL = "https://www.huygenstudios.com";
 const SITE_NAME = "Huygen Studios Blog";
@@ -19,7 +20,7 @@ function escapeXml(str: string): string {
 }
 
 export async function GET() {
-  let posts = await getBlogPosts().catch(() => []);
+  let posts = await getBlogPosts({ fresh: true }).catch(() => []);
   // Sort by published date descending, most recent first
   posts = posts
     .filter((p) => p && p.slug && p.publishedAt)
@@ -64,7 +65,7 @@ export async function GET() {
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
-      <url>${SITE_URL}/android-chrome-512x512.png</url>
+      <url>${SITE_URL}/Huygen%20Studios%20logo%20Black%20horizontal.png</url>
       <title>${escapeXml(SITE_NAME)}</title>
       <link>${SITE_URL}/blog</link>
     </image>${items}

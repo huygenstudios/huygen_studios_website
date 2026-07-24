@@ -757,7 +757,7 @@ export default function GallerySection({ isPlaying, toggleAudio }: GallerySectio
 
       {/* Top Nav Overlay */}
       <nav className="gallery-nav">
-        <a className="gallery-logo" href="#">
+        <a className="gallery-logo" href="#work">
           <div className="logo-ring">
             <svg viewBox="0 0 14 14" fill="none">
               <circle cx="7" cy="7" r="5.5" stroke="#fff" strokeWidth="1.1" />
@@ -774,7 +774,7 @@ export default function GallerySection({ isPlaying, toggleAudio }: GallerySectio
             </svg>
             Filter
           </button>
-          <a className="gallery-pill" href="#">
+          <a className="gallery-pill" href="mailto:hello@huygenstudios.com">
             Let&#8217;s Talk &rarr;
           </a>
         </div>
@@ -820,7 +820,7 @@ export default function GallerySection({ isPlaying, toggleAudio }: GallerySectio
         </button>
         <nav className="bottom-nav">
           <a
-            href="#"
+            href="#work"
             className={activeTab === 'work' ? 'on' : ''}
             onClick={(e) => {
               e.preventDefault();
@@ -830,22 +830,14 @@ export default function GallerySection({ isPlaying, toggleAudio }: GallerySectio
             Work
           </a>
           <a
-            href="#"
+            href="/about"
             className={activeTab === 'about' ? 'on' : ''}
-            onClick={(e) => {
-              e.preventDefault();
-              setActiveTab('about');
-            }}
           >
             About
           </a>
           <a
-            href="#"
+            href="/contact"
             className={activeTab === 'careers' ? 'on' : ''}
-            onClick={(e) => {
-              e.preventDefault();
-              setActiveTab('careers');
-            }}
           >
             Careers
           </a>
@@ -863,7 +855,7 @@ export default function GallerySection({ isPlaying, toggleAudio }: GallerySectio
               </svg>
               Back to Gallery
             </button>
-            <a className="gallery-pill" href="#">
+            <a className="gallery-pill" href="mailto:hello@huygenstudios.com">
               Let&#8217;s Talk &rarr;
             </a>
           </div>

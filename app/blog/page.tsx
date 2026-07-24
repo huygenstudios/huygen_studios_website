@@ -5,11 +5,12 @@ import { BlogPost } from "@/lib/blog/types";
 import { BlogCatalog } from "@/components/blog/BlogCatalog";
 import { AnimatedReveal } from "@/components/animations/AnimatedReveal";
 import { AnimatedText } from "@/components/animations/AnimatedText";
+import Link from "next/link";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Studio Blog & Insights | Huygen Studios",
+  title: "Studio Blog & Insights",
   description:
     "Read technical articles from Huygen Studios on custom AI agents, Twilio voice integration, WebGL performance, and Meta's WhatsApp Cloud API setups.",
   alternates: { canonical: "/blog" },
@@ -40,6 +41,15 @@ export default async function BlogCatalogPage() {
             </AnimatedText>
             <AnimatedReveal as="p" delay={0.18} className="blog-supporting-copy text-base md:text-lg text-[#b8bac1] leading-relaxed">
               Practical insights on AI systems, automation workflows, CRM & sales pipelines, cinematic web strategy, and technical implementations.
+            </AnimatedReveal>
+            <AnimatedReveal as="p" delay={0.24} className="mt-4 text-sm text-[#93969e] leading-relaxed">
+              Articles shown here have passed the studio&apos;s current publication checks.
+              Older automated news drafts that still require substantive review are excluded
+              from the catalog and sitemap. Read our{" "}
+              <Link className="text-white underline hover:text-[#4a79ff]" href="/editorial-standards">
+                editorial standards
+              </Link>
+              .
             </AnimatedReveal>
           </div>
 
